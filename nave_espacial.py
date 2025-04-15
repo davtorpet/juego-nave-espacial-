@@ -2,29 +2,33 @@ import pygame
 import random
 import math
 from pygame import mixer # Para sonidos
+import os
+
+#Ruta donde esta este fichero
+ruta_base = os.path.dirname(__file__)
 
 #Inicializar a pygame
 pygame.init()
 
 #Crear la pantalla
 pantalla = pygame.display.set_mode((800,600))
-
+r"C:\Users\David\Desktop\Python\fotos\astronave.png"
 #Titulo e Icono
 pygame.display.set_caption ("Invasion Espacial")
-icono = pygame.image.load(r"C:\Users\David\Desktop\Python\fotos\astronave.png")
+icono = pygame.image.load(os.path.join(ruta_base,"fotos","astronave.png"))
 pygame.display.set_icon(icono)
-fondo = pygame.image.load(r"C:\Users\David\Desktop\Python\fotos\fondo_mejor.jpg")
+fondo = pygame.image.load(os.path.join(ruta_base,"fotos","fondo_mejor.jpg"))
 
 #agregar musica
-mixer.music.load(r"C:\Users\David\Desktop\Python\sonidos\MusicaFondo.mp3")
+mixer.music.load(os.path.join(ruta_base,"sonidos","MusicaFondo.mp3"))
 #mixer.music.set_volume(0.5) Para bajarle o subirle el sonido
 mixer.music.play(-1)
 
 #Variables Jugador
-img_jugador = pygame.image.load(r"C:\Users\David\Desktop\Python\fotos\cohete.png")
+img_jugador = pygame.image.load(os.path.join(ruta_base,"fotos","cohete.png"))
 jugador_x = 368  #800/2-32 32 es la mitad de 64 que son los pixeles
 jugador_y = 500   #600-64
-jugador_x_cambio = 0.3
+jugador_x_cambio = 0
 
 #Variables Enemigo
 img_enemigo = []
@@ -35,15 +39,14 @@ enemigo_y_cambio = []
 cantidad_enemigos = 8
 
 for e in range(cantidad_enemigos):
-    img_enemigo.append(pygame.image.load(r"C:\Users\David\Desktop\Python\fotos\enemigo.png"))
+    img_enemigo.append(pygame.image.load(os.path.join(ruta_base,"fotos","enemigo.png")))
     enemigo_x.append(random.randint(0,736))
     enemigo_y.append(random.randint(50,200))
     enemigo_x_cambio.append(0.5)
     enemigo_y_cambio.append(50)
 
 #Variables de la bala
-balas = []
-img_bala = pygame.image.load(r"C:\Users\David\Desktop\Python\fotos\bala_bien.jpg")
+img_bala = pygame.image.load(os.path.join(ruta_base,"fotos","bala_bien.jpg"))
 bala_x = 0
 bala_y = 500
 bala_x_cambio = 0
@@ -107,11 +110,11 @@ while se_ejecuta:
         #Evento presionar teclas
         if evento.type == pygame.KEYDOWN:
             if evento.key == pygame.K_LEFT:
-                jugador_x_cambio = 1
+                jugador_x_cambio = -1
             if evento.key == pygame.K_RIGHT:
                 jugador_x_cambio = 1
             if evento.key == pygame.K_SPACE:
-                sonido_bala = mixer.Sound(r"C:\Users\David\Desktop\Python\sonidos\Disparo.mp3")
+                sonido_bala = mixer.Sound(os.path.join(ruta_base,"sonidos","Disparo.mp3"))
                 sonido_bala.play()
                 if not bala_visible:
                     bala_x = jugador_x
@@ -150,7 +153,7 @@ while se_ejecuta:
         #Detectar colision
         colision = hay_colision(enemigo_x[e],enemigo_y[e],bala_x,bala_y)
         if colision:
-            sonido_colision = mixer.Sound(r"C:\Users\David\Desktop\Python\sonidos\golpe.mp3")
+            sonido_colision = mixer.Sound(os.path.join(ruta_base,"sonidos","golpe.mp3"))
             sonido_colision.play()
             bala_y = 500
             bala_visible = False
